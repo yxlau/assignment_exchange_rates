@@ -14,9 +14,10 @@ const Select = ({ optionList, callback, defaultValue, disabled }) => {
   }
 
   return (
-    <select className="mb-2 mr-sm-2 mb-sm-0" onChange={callback} value={defaultValue} >
+    <select className="mb-2 mr-sm-2 mb-sm-0" onChange={callback} value={defaultValue}>
     {options}
-  </select>)
+  </select>
+  )
 }
 
 export default Select

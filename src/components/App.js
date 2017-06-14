@@ -12,7 +12,7 @@ const App = ({ latestRates, currencyList, changeLatestBase, calculatorFrom, calc
       <h1 className="page-title">Exchange Rates</h1>
     </header>
     <p className="text-right">
-    <span><a href="#latest-rates">Current Rates</a> / <a href="#historical-rate">Historical Rate</a> / <a href="#calculator">Converter</a></span>
+    <span><a href="#calculator">Converter</a> / <a href="#latest-rates">Current Rates</a> / <a href="#historical-rate">Historical Rate</a> </span>
     </p>
       <main className="container-fluid">
         <Converter rates={conversionRates} defaultRates={latestRates} currencyList={currencyList} updateFromCurrency={updateFromCurrency} updateToCurrency={updateToCurrency} getLatestRates={getLatestRates} />
