@@ -43,6 +43,7 @@ class Converter extends Component {
   }
 
   updateBaseCurrency = (e) => {
+    this.setState({ base: e.target.value })
     this.getLatestRates(e.target.value, 'conversionRates')
   }
 
@@ -63,8 +64,9 @@ class Converter extends Component {
       <h3>Converter</h3>
       <Form>
       <InputGroup>
-        <TextInput type="number" value={amount} callback={this.updateAmount} step="0.00001"  />
-        <Select optionList={currencyList} callback={this.updateBaseCurrency}/>
+        <TextInput type="number" value={amount} callback={this.updateAmount} step="0.01"  />
+        <Select optionList={currencyList} callback={this.updateBaseCurrency} disabled={to} />
+        <p className="mt-3">=</p>
       </InputGroup>
       </Form>
       <Form inline="false" classes="text-center">
