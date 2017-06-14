@@ -12,3 +12,13 @@ body {
 .custom-card-body {
     font-size: 34px;
 }
+
+h3 {
+    letter-spacing: .5px;
+}
+
+#calculator,
+#latest-rates,
+#historical-rate {
+    margin: 80px auto;
+}

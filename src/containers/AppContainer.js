@@ -2,6 +2,7 @@ import React, { Component } from 'react'
 import { formatDate } from '../helpers/helpers'
 import App from '../components/App'
 
+
 class AppContainer extends Component {
   // get currencies and store them somewhere for our dropdowns
   // display exchange rate 
@@ -11,19 +12,15 @@ class AppContainer extends Component {
     this.state = {
       base: 'EUR',
       comparison: 'USD',
-      historicalBase: 'EUR',
-      historicalComparison: 'USD'
     }
-    this.getLatestRates = this.getLatestRates.bind(this)
-    this.changeLatestBase = this.changeLatestBase.bind(this)
-    this.getHistoricalRate = this.getHistoricalRate.bind(this)
-    this.updateHistoricalBase = this.updateHistoricalBase.bind(this)
-    this.updateHistoricalComparison = this.updateHistoricalComparison.bind(this)
   }
 
   componentDidMount() {
     this.getLatestRates();
-    this.getHistoricalRate();
+    this.getHistoricalRates();
+
+
+
   }
 
   setupBase = (base) => {
@@ -33,7 +30,7 @@ class AppContainer extends Component {
     return base
   }
 
-  getHistoricalRate = (base, comparison) => {
+  getHistoricalRates = (base, comparison) => {
     base = this.setupBase(base);
     const now = new Date();
     const aYear = 1000 * 365 * 24 * 60 * 60
@@ -45,7 +42,7 @@ class AppContainer extends Component {
     var fetches = []
 
     for (var i = 0; i < years.length; i++) {
-      var url = base ? 'https://api.fixer.io/' + years[i] + '?base=' + base : 'https://api.fixer.io/' + years[i];
+      var url = base ? 'http://api.fixer.io/' + years[i] + '?base=' + base : 'http://api.fixer.io/' + years[i];
       fetches.push(
           fetch(url, { method: 'GET' })
           .then((response) => {
@@ -59,7 +56,7 @@ class AppContainer extends Component {
     Promise.all(fetches)
       .then((data) => {
         this.setState({
-          historicalRates: this.parseHistoricalRates(data)
+          historicalRates: this.parseHistoricalRates(data, comparison)
         })
       })
       .catch((error) => {
@@ -67,34 +64,30 @@ class AppContainer extends Component {
       })
   }
 
-  parseHistoricalRates = (rates) => {
-    console.log(rates);
+  parseHistoricalRates = (rates, comparison) => {
     var dates = ["3 years ago", "2 years ago", "last year", "now"]
     var parsed = {}
     for (var i = 0; i < dates.length; i++) {
-      parsed[dates[i]] = rates[i].rates[this.state.historicalComparison]
+      parsed[dates[i]] = rates[i].rates[comparison]
     }
+
     return parsed
   }
 
-  updateHistoricalBase = (e) => {
+
+  updateFromCurrency = (e) => {
     e.preventDefault()
-    var newBase = e.target.value
-    console.log('updatehistoricalbase')
-    this.setState({ historicalBase: newBase },
-      this.getHistoricalRate(newBase)
+    this.setState({ calculatorFrom: e.target.value },
+      this.getLatestRates(e.target.value)
     )
-  }
 
-  updateHistoricalComparison = (e) => {
-    console.log('updatehistoricalcomparison', e.target.value)
-    var newComp = e.target.value
-    this.setState({ historicalComparison: newComp }, this.getHistoricalRate(null, newComp));
   }
 
 
-  getLatestRates = (base) => {
-    const url = base ? 'http://api.fixer.io/latest?base=' + base : 'http://api.fixer.io/latest';
+  getLatestRates = (base, target) => {
+    target = target || 'latestRates'
+    base = this.setupBase(base)
+    const url = base ? 'https://api.fixer.io/latest?base=' + base : 'https://api.fixer.io/latest';
     const options = {
       method: 'GET',
     }
@@ -106,13 +99,14 @@ class AppContainer extends Component {
         return response.json()
       })
       .then((rates) => {
-        console.log('latest rates response:', rates)
-        if (!this.state.currencies) {
+        if (!this.state.currencyList) {
           this.setupCurrencyList(rates)
           this.setState({ latestRates: rates })
-
+          this.setState({ conversionRates: rates })
         } else {
-          this.setState({ latestRates: rates })
+          this.setState({
+            [target]: rates
+          })
         }
       })
       .catch((error) => {
@@ -136,7 +130,9 @@ class AppContainer extends Component {
     // const { currencyList, latestRates, historicalRates } = this.state
     return (
       <App  
-      changeLatestBase={this.changeLatestBase} getHistoricalRate={this.getHistoricalRate} updateHistoricalBase={this.updateHistoricalBase} updateHistoricalComparison={this.updateHistoricalComparison} {...this.state} />
+      changeLatestBase={this.changeLatestBase} getHistoricalRates={this.getHistoricalRates} 
+      updateFromCurrency={this.updateFromCurrency} getLatestRates={this.getLatestRates}
+      {...this.state} />
     )
   }
 

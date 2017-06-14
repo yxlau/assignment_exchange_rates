@@ -14,13 +14,14 @@ class HistoricalRate extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      currencyList: this.props.currencyList,
-      historicalRates: this.props.historicalRates,
-      base: this.props.base,
-      comparison: this.props.comparison
-    }
-    this.updateHistoricalBase = this.props.updateHistoricalBase
-    this.updateHistoricalComparison = this.props.updateHistoricalComparison
+        currencyList: this.props.currencyList,
+        historicalRates: this.props.historicalRates,
+        base: this.props.base || 'EUR',
+        comparison: this.props.comparison || 'USD'
+      }
+      // this.updateHistoricalBase = this.props.updateHistoricalBase
+      // this.updateHistoricalComparison = this.props.updateHistoricalComparison
+    this.getHistoricalRate = this.props.getHistoricalRate
   }
 
   componentWillReceiveProps = (props) => {
@@ -40,6 +41,16 @@ class HistoricalRate extends Component {
 
   }
 
+  updateBase = (e) => {
+    this.setState({ base: e.target.value })
+    this.getHistoricalRate(e.target.value, this.state.comparison)
+  }
+
+  updateComparison = (e) => {
+    this.setState({ comparison: e.target.value })
+    this.getHistoricalRate(this.state.base, e.target.value)
+  }
+
 
   render() {
 
@@ -54,8 +65,8 @@ class HistoricalRate extends Component {
     <h3>Historical Rate</h3>
     <Form classes="mb-2">
     <InputGroup name="latest-rates">
-    <Select optionList={currencyList} callback={this.updateHistoricalBase} defaultValue={base} disabled={comparison} />
-    <Select optionList={currencyList} callback={this.updateHistoricalComparison} defaultValue={comparison} disabled={base} />
+    <Select optionList={currencyList} callback={this.updateBase} defaultValue={base} disabled={comparison} />
+    <Select optionList={currencyList} callback={this.updateComparison} defaultValue={comparison} disabled={base} />
     </InputGroup> 
       </Form>
       {cards}
@@ -63,36 +74,6 @@ class HistoricalRate extends Component {
     )
   }
 
-
-  // const HistoricalRate = ({ currencyList, historicalRates, updateHistoricalBase, updateHistoricalComparison }) => {
-
-  //   console.log('historicalRates', historicalRates);
-
-
-  //   return (
-  //     <section id="historical-rate">
-  //     <h3>Historical Rate</h3>
-  //     <Form >
-  //     <InputGroup name="latest-rates">
-  //     <Select optionList={currencyList} callback={updateHistoricalBase} defaultValue="EURO" />
-  //     <Select optionList={currencyList} callback={updateHistoricalComparison} defaultValue="USD" />
-  //     </InputGroup> 
-  //       </Form>
-
-  //     <div className="row">
-  //     <div className="col">
-  //       3 years ago
-
-  //     </div>
-  //     <div className="col">
-  // 2 years ago
-  //     </div>
-  //     <div className="col">
-  // 1 year ago
-  //     </div>
-  //     </div>
-  //     </section>
-  //   )
 }
 
 export default HistoricalRate
