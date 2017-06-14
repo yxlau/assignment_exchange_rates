@@ -41,7 +41,7 @@ class AppContainer extends Component {
     var fetches = []
 
     for (var i = 0; i < years.length; i++) {
-      var url = base ? 'http://api.fixer.io/' + years[i] + '?base=' + base : 'http://api.fixer.io/' + years[i];
+      var url = base ? 'https://api.fixer.io/' + years[i] + '?base=' + base : 'https://api.fixer.io/' + years[i];
       fetches.push(
         fetch(url, { method: 'GET' })
         .then((response) => {
