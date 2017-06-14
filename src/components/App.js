@@ -1,10 +1,10 @@
 import React from 'react';
 import LatestRates from './LatestRates'
 import HistoricalRate from './HistoricalRate'
-import Calculator from './Calculator'
+import Converter from './Converter'
 import '../App.css';
 
-const App = ({ latestRates, currencyList, changeLatestBase, calculatorFrom, calculatorTo, getHistoricalRates, updateFromCurrency, updateToCurrency, historicalRates, getLatestRates, conversionRates }) => {
+const App = ({ latestRates, currencyList, changeLatestBase, calculatorFrom, calculatorTo, getHistoricalRate, updateFromCurrency, updateToCurrency, historicalRates, getLatestRates, conversionRates }) => {
 
   return (
     <div className="App">
@@ -12,10 +12,10 @@ const App = ({ latestRates, currencyList, changeLatestBase, calculatorFrom, calc
       <h1 className="page-title">Exchange Rates</h1>
     </header>
     <p className="text-right">
-    <span><a href="#latest-rates">Current Rates</a> / <a href="#historical-rate">Historical Rate</a> / <a href="#calculator">Calculator</a></span>
+    <span><a href="#latest-rates">Current Rates</a> / <a href="#historical-rate">Historical Rate</a> / <a href="#calculator">Converter</a></span>
     </p>
       <main className="container-fluid">
-        <Calculator rates={conversionRates} defaultRates={latestRates} currencyList={currencyList} updateFromCurrency={updateFromCurrency} updateToCurrency={updateToCurrency} getLatestRates={getLatestRates} />
+        <Converter rates={conversionRates} defaultRates={latestRates} currencyList={currencyList} updateFromCurrency={updateFromCurrency} updateToCurrency={updateToCurrency} getLatestRates={getLatestRates} />
         <hr />
         <LatestRates 
         currencies={currencyList} 
@@ -26,7 +26,7 @@ const App = ({ latestRates, currencyList, changeLatestBase, calculatorFrom, calc
       <HistoricalRate 
         currencyList={currencyList} 
         historicalRates={historicalRates} 
-        getHistoricalRates={getHistoricalRates}
+        getHistoricalRate={getHistoricalRate}
          />
       </main>
       </div>

@@ -17,20 +17,19 @@ class AppContainer extends Component {
 
   componentDidMount() {
     this.getLatestRates();
-    this.getHistoricalRates();
-
-
-
+    this.getHistoricalRate();
   }
 
   setupBase = (base) => {
+    // by default, fixer.io uses EUR as its base
+    // this ensures that we don't make a GET request with ?base=EUR to fixer.io
     if (base === 'EUR') {
       return null
     }
     return base
   }
 
-  getHistoricalRates = (base, comparison) => {
+  getHistoricalRate = (base, comparison) => {
     base = this.setupBase(base);
     const now = new Date();
     const aYear = 1000 * 365 * 24 * 60 * 60
@@ -44,14 +43,13 @@ class AppContainer extends Component {
     for (var i = 0; i < years.length; i++) {
       var url = base ? 'http://api.fixer.io/' + years[i] + '?base=' + base : 'http://api.fixer.io/' + years[i];
       fetches.push(
-          fetch(url, { method: 'GET' })
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error('Couldn\'t retrieve rate for date ' + years[i] + 'and base ' + base)
-            }
-            return response.json()
-          }))
-        // returns { base: .. date: .. rates: {...} }
+        fetch(url, { method: 'GET' })
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error('Couldn\'t retrieve rate for date ' + years[i] + 'and base ' + base)
+          }
+          return response.json()
+        }))
     }
     Promise.all(fetches)
       .then((data) => {
@@ -127,10 +125,9 @@ class AppContainer extends Component {
 
 
   render() {
-    // const { currencyList, latestRates, historicalRates } = this.state
     return (
       <App  
-      changeLatestBase={this.changeLatestBase} getHistoricalRates={this.getHistoricalRates} 
+      changeLatestBase={this.changeLatestBase} getHistoricalRate={this.getHistoricalRate} 
       updateFromCurrency={this.updateFromCurrency} getLatestRates={this.getLatestRates}
       {...this.state} />
     )

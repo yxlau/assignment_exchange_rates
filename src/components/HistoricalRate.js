@@ -4,28 +4,20 @@ import InputGroup from './elements/InputGroup'
 import Select from './elements/Select'
 import Card from './elements/Card'
 
-// change this to class
-// select can become functional again
-// save state here. default values, callback to update value
-
-
 class HistoricalRate extends Component {
 
   constructor(props) {
     super(props)
     this.state = {
-        currencyList: this.props.currencyList,
-        historicalRates: this.props.historicalRates,
-        base: this.props.base || 'EUR',
-        comparison: this.props.comparison || 'USD'
-      }
-      // this.updateHistoricalBase = this.props.updateHistoricalBase
-      // this.updateHistoricalComparison = this.props.updateHistoricalComparison
+      currencyList: this.props.currencyList,
+      historicalRates: this.props.historicalRates,
+      base: this.props.base || 'EUR',
+      comparison: this.props.comparison || 'USD'
+    }
     this.getHistoricalRate = this.props.getHistoricalRate
   }
 
   componentWillReceiveProps = (props) => {
-    console.log('received props', props);
     if (props.currencyList) {
       this.setState({ currencyList: props.currencyList })
     }

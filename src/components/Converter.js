@@ -5,7 +5,7 @@ import TextInput from './elements/TextInput'
 import Select from './elements/Select'
 
 
-class Calculator extends Component {
+class Converter extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -60,7 +60,7 @@ class Calculator extends Component {
     const { currencyList, converted, amount, to, base } = this.state
     return (
       <section id="calculator">
-      <h3>Calculator</h3>
+      <h3>Converter</h3>
       <Form>
       <InputGroup>
         <TextInput type="number" value={amount} callback={this.updateAmount} step="0.00001"  />
@@ -76,4 +76,4 @@ class Calculator extends Component {
   }
 }
 
-export default Calculator
+export default Converter
